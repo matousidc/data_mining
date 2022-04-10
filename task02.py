@@ -16,13 +16,14 @@ from sklearn.metrics import confusion_matrix, classification_report
 
 pd.set_option('max_columns', None)
 pd.options.display.width = None
-'''data = sns.load_dataset('titanic')
+data = sns.load_dataset('titanic')
 
+# ******************************************* section 01 - Logistic regression
 data = data.drop(['who', 'adult_male', 'embark_town', 'alive', 'class', 'alone'], axis='columns')
 X = data.drop(['survived'], axis='columns')
 y = data['survived']
 
-# cleaning the dataset
+# cleaning data
 numeric_features = ["age", "fare"]
 numeric_transformer = Pipeline(steps=[("imputer", SimpleImputer(strategy="median")),
                                       ("scaler", StandardScaler())])
@@ -45,23 +46,24 @@ y_pred = clf.predict(x_test)
 
 # print('score:', score)
 # print('mean squared error:', mean_squared_error(y_test, y_pred))
-# print('r2 score:', r2_score(y_test, y_pred))'''
+# print('r2 score:', r2_score(y_test, y_pred))
 
-# ******************************************************* cviko 5
-'''sns.set_theme()
+# ******************************************************* section 02 - tiping
+sns.set_theme()
 tips = sns.load_dataset('tips')
 tips['ratio'] = tips['tip'] / tips['total_bill']
 mean = tips.groupby('sex')['ratio'].mean()
 
-# sns.lmplot(data=tips, x="total_bill", y="ratio", hue='sex')
+sns.lmplot(data=tips, x="total_bill", y="ratio", hue='sex')
 sns.relplot(data=tips, x="total_bill", y="ratio", hue='sex')
 plt.axhline(mean['Male'], 0, 50)
 plt.axhline(mean['Female'], 0, 50, color='orange')
-# plt.show()'''
+plt.show()
 
-# ************************************************ cviko 7
+# ************************************************ section 03 - Decision tree
 data = sns.load_dataset('titanic')
 data_2 = data.copy()
+# cleaning data
 data = data.drop(['who', 'adult_male', 'embark_town', 'alive', 'class', 'alone'], axis='columns')
 print(data)
 data = pd.concat([data, pd.get_dummies(data["sex"]),
@@ -73,6 +75,7 @@ print(data)
 x = data.drop(['survived'], axis='columns')
 y = data['survived']
 
+# training
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.20, random_state=42)
 clf = tree.DecisionTreeClassifier().fit(x_train, y_train)
 fig, axes = plt.subplots(dpi=300)
@@ -81,10 +84,9 @@ tree.plot_tree(clf, feature_names=list(data),
                filled=True)
 
 print(classification_report(y_test, clf.predict(x_test)))
-# **********************
+# ********************** another aproach
 x = data_2.drop(['survived'], axis='columns')
 y = data_2['survived']
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.20, random_state=42)
 
 numeric_features = ["age", "fare"]
 numeric_transformer = Pipeline(steps=[("imputer", SimpleImputer(strategy="mean")),
@@ -96,7 +98,8 @@ categorical_transformer = Pipeline(steps=[("imputer", SimpleImputer(strategy="co
 
 preprocessor = ColumnTransformer(transformers=[('num', numeric_transformer, numeric_features),
                                                ("cat", categorical_transformer, categorical_features)])
-
+# training
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.20, random_state=42)
 clf = Pipeline(steps=[("preprocessor", preprocessor),
                       ("classifier", tree.DecisionTreeClassifier())])
 clf.fit(x_train, y_train)
