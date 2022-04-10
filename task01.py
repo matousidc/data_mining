@@ -67,7 +67,7 @@ for i in genres_list:
         df = df.set_index([pd.Index([x for x in range(100)])])
     frames.append(df)
 
-# ********************************************************************* cviceni 03
+# ********************************************************************* section 02
 mean_values = []
 for i in genres_list:
     df = df_merged[df_merged['Genres'].str.contains(i)].copy()
@@ -97,7 +97,7 @@ for i in range(len(df_decades)):            # changes needed rows to 'druha polo
 
 df_decades = df_decades.drop(['bins', 'Year'], axis='columns')      # deletes unwanted columns
 
-# ************************************************************************* cviceni 4
+# ************************************************************************* section 03
 
 qq = df_ratings['Rating'].value_counts()
 plt.bar(qq.index, qq)                       # histogram
