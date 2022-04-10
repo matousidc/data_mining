@@ -6,11 +6,9 @@ import re
 from io import StringIO
 import matplotlib.pyplot as plt
 
-fp = os.path.join('./data_mining/movies.dat')
-with open(fp, 'r') as file:
+with open('movies.dat', 'r') as file:
     movies = file.read()
-fp = os.path.join('./data_mining/ratings.dat')
-with open(fp, 'r') as file:
+with open('ratings.dat', 'r') as file:
     ratings = file.read()
 
 headers = ['MovieID', 'Title', 'Genres', 'sorted_by_genre']
